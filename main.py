@@ -49,6 +49,9 @@ parser.add_argument('-pg', '--pages',
                     dest='PAGES',   action='store_true',
                     help='show total pages of doujinshi')
 
+parser.add_argument('-u', '--url',
+                    dest='URL', action='store_true')
+
 argc = parser.parse_args()
 
 # print(vars(argc))
@@ -65,6 +68,7 @@ class MyDoujin:
     parodies: str = Fore.LIGHTGREEN_EX + 'Parodies: ' + Fore.LIGHTCYAN_EX
     groups: str = Fore.LIGHTGREEN_EX + 'Groups: ' + Fore.LIGHTCYAN_EX
     pages: str = Fore.LIGHTGREEN_EX + 'Total pages: ' + Fore.LIGHTCYAN_EX
+    url: str = Fore.LIGHTGREEN_EX + 'URL: ' + Fore.YELLOW
 
     def __init__(self, id, title, tag, artist, lang, cat, char, par, groups, pages) -> None:
         self.id += id + '\n'
@@ -77,6 +81,7 @@ class MyDoujin:
         self.parodies += par + '\n'
         self.groups += groups + '\n'
         self.pages += pages + '\n'
+        self.url += f'nhentai.net/g/{id}\n'
 
     def all_data(self):
         return self.title +\
@@ -87,7 +92,8 @@ class MyDoujin:
             self.characters +\
             self.parodies +\
             self.groups +\
-            self.pages
+            self.pages +\
+            self.url
 
 
 def get_data(argc):
@@ -143,6 +149,10 @@ def get_data(argc):
     if argc.PAGES:
         is_alone = False
         yield mydoujin.pages
+
+    if argc.URL:
+        is_alone = False
+        yield mydoujin.url
 
     if is_alone:
         yield mydoujin.all_data()
